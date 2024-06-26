@@ -56,7 +56,7 @@ try:
 					if os.path.exists(exclude):
 						pathExclude=removeEndSwith(exclude)
 						excludeList.append("--exclude="+ pathExclude)
-						#pathsExclude=removeEndSwith(exclude)
+
 					else: 
 						print("el directorio " + exclude + " no existe. No se tendra en cuenta")
 				excludeStr=' '.join(excludeList)
@@ -65,28 +65,47 @@ try:
 					snapshot=destination + "/full.snapshot"
 					if os.path.exists(snapshot):
 						print("eliminando SNAPSHOT existente en " + snapshot)
-						subprocess.check_output("rm " + snapshot, shell=True, stderr=subprocess.STDOUT, text=True)
+						subprocess.check_output("rm -f " + snapshot, shell=True, stderr=subprocess.STDOUT)
 						print("creado nuevo SNAPSHOT .... ")
-						subprocess.check_output("touch " + snapshot, shell=True, stderr=subprocess.STDOUT, text=True)
+						subprocess.check_output("touch " + snapshot, shell=True, stderr=subprocess.STDOUT)
 					else:
 						print("creado nuevo SNAPSHOT .... ")
-						subprocess.check_output("touch " + snapshot, shell=True, stderr=subprocess.STDOUT, text=True)
+						subprocess.check_output("touch " + snapshot, shell=True, stderr=subprocess.STDOUT)
+					filename=destination + "/" + _datetime + "_full.tar.gz"
+					command="tar -cvzg " + snapshot + " -f " + filename + " " + excludeStr + ' ' + source
 
-					command="tar -cvzg " + snapshot + " -f " + destination + "/" + _datetime + "_full.tar.gz " + excludeStr + ' ' + source
 				elif args.incremental:
 					snapshot=destination + "/full.snapshot"
 					if os.path.exists(snapshot):
-						command="tar -cvzg " + snapshot + " -f " + destination + "/" + _datetime + "_inc.tar.gz " + excludeStr + ' ' + source
+						filename=destination + "/" + _datetime + "_inc.tar.gz"
+						command="tar -cvzg " + snapshot + " -f " + filename + " " + excludeStr + ' ' + source
 					else:
 						print("el archivo de SNAPSHOT no existe, debes realizar un backup completo con anterioridad")
 				else:
-					command="tar -cvzf " + destination + "/" + _datetime + ".tar.gz " + excludeStr + ' ' + source
+					filename=destination + "/" + _datetime + ".tar.gz"	
+					command="tar -cvzf " + filename + " " + excludeStr + ' ' + source
 		else:
-				command="tar -cvzf " + destination + "/" + _datetime + ".tar.gz " + source
-
+				filename=destination + "/" + _datetime + ".tar.gz"
+				command="tar -cvzf " + filename + " " + source
+				
 		print("ejecutando la copia de seguridad ...")
-		result=subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True)
-		print("La copia se ha guardado como " + _datetime + ".tar.gz en el directorio " + destination)
+		
+		process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		stdout, _ = process.communicate()
+		logFile=filename + ".log"
+
+		with open(logFile, 'a') as log_file:
+			log_file.write(stdout.decode('utf-8'))
+
+		if args.telegram:
+			tokenapi, chatid = args.telegram
+			message=""
+			if os.path.exists(filename):
+				size=os.path.getsize(filename) / (1000 * 1000)
+				message="🆗🆗🆗 BACKUP EXITOSO 🆗🆗🆗 ,📁 " + filename + " 📁, 📅 " + now.strftime("%Y-%M-%d") + " 📅, 🪨 " + str(size) + " MB"
+			sendTelegram(tokenapi, chatid, message)
+
+		print(filename)
 		
 	else:
 		if not os.path.exists(args.source) and not os.path.exists(args.destination):
