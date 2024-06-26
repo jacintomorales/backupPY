@@ -8,16 +8,19 @@ parser.add_argument('-m', '--message', type=str, help='Mensaje a enviar a traves
 
 args = parser.parse_args()
 
-try:
-        url="https://api.telegram.org/bot"
-        method="sendMessage"
+def sendTelegram(token, chatid, message):
+        try:
+                url="https://api.telegram.org/bot"
+                method="sendMessage"
 
-        if args.token and args.chatid:
-                data={'chat_id': args.chatid, 'text': args.message}
-                r = requests.post(url+args.token+"/"+method, data).json()
-                print(r)
-        else:
-                print("Recuerda el TOKEN y el CHATID")
+                if token and chatid:
+                        data={'chat_id': chatid, 'text': message}
+                        r = requests.post(url+token+"/"+method, data).json()
+                        print(r)
+                else:
+                        print("Recuerda el TOKEN y el CHATID")
 
-except requests.exceptions.HTTPError as e:
-        print(e)
+        except requests.exceptions.HTTPError as e:
+                print(e)
+
+sendTelegram(args.token, args.chatid, args.message)

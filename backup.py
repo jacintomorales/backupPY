@@ -16,6 +16,7 @@ import os
 import subprocess
 import argparse
 from datetime import datetime
+from telegram import sendTelegram
 
 ### Argumentos parser ###
 
@@ -23,9 +24,9 @@ parser = argparse.ArgumentParser(description='Copia de seguridad de archivos y d
 parser.add_argument('-s', '--source', help='ruta de origen de las carpetas a copiar', required=True)
 parser.add_argument('-d', '--destination', help='ruta de destino donde se guardara la copia de seguridad', required=True)
 parser.add_argument('-e', '--exclude', type=str, nargs='*', default=None, help='ruta de carpetas que no quieres que esten en la copia')
-parser.add_argument('-r', '--register', type=str, default=None, help='archivo donde se guardara la salida de la copia de seguridad', required=False)
 parser.add_argument('-f', '--full', action='store_true', help='se indica que el backup es completo')
 parser.add_argument('-i', '--incremental', action='store_true', help='se indica que el backup es diferencial')
+parser.add_argument('-t', '--telegram', type=str, nargs=2, default=None, help='se enviara un mensaje al bot de telegram. Se espera <TOKENAPI> <CHATID>', required=False)
 
 args = parser.parse_args()
 
