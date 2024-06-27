@@ -5,7 +5,7 @@
 # Prerequisitos: 
 # S.O: Linux
 # -- tar
-# -- python3
+# -- python 3.5 o superior
 # Autor: https://github.com/jacintomorales
 # Ejemplo 1: python3 backup.py -s <FUENTE> -d <DESTINO> --exclude <RUTA1> <RUTA2> --full 
 # Ejemplo 2: python3 backup.py -s <FUENTE> -d <DESTINO> ---exclude <RUTA1> <RUTA2> --incremental
@@ -16,7 +16,7 @@ import os
 import subprocess
 import argparse
 from datetime import datetime
-from telegram import sendTelegram
+from telegramJM import sendTelegram
 
 ### Argumentos parser ###
 
@@ -40,42 +40,45 @@ def removeEndSwith(path):
 		newpath=path
 	return newpath
 
+def resetSnapshot(file):
+	if os.path.exists(file):
+		print("eliminando SNAPSHOT existente en " + file)
+		subprocess.check_output("rm -f " + file, shell=True, stderr=subprocess.STDOUT)
+		print("creado nuevo SNAPSHOT .... ")
+		subprocess.check_output("touch " + file, shell=True, stderr=subprocess.STDOUT)
+	else:
+		print("creado nuevo SNAPSHOT .... ")
+		subprocess.check_output("touch " + file, shell=True, stderr=subprocess.STDOUT)
+
 ### Codigo ###
 
 try:
 	if os.path.exists(args.source) and os.path.exists(args.destination):
+
 		source=removeEndSwith(args.source)
-		destination=removeEndSwith(args.destination)
-				
+		destination=removeEndSwith(args.destination)		
 		now=datetime.now()
 		_datetime = now.strftime("%Y%m%d-%H%M%S")
 
 		if args.exclude is not None:
+				
 				excludeList=[]
+				snapshot=destination + "/full.snapshot"
+				
 				for exclude in args.exclude:
 					if os.path.exists(exclude):
 						pathExclude=removeEndSwith(exclude)
 						excludeList.append("--exclude="+ pathExclude)
-
 					else: 
 						print("el directorio " + exclude + " no existe. No se tendra en cuenta")
+				
 				excludeStr=' '.join(excludeList)
 				
 				if args.full:
-					snapshot=destination + "/full.snapshot"
-					if os.path.exists(snapshot):
-						print("eliminando SNAPSHOT existente en " + snapshot)
-						subprocess.check_output("rm -f " + snapshot, shell=True, stderr=subprocess.STDOUT)
-						print("creado nuevo SNAPSHOT .... ")
-						subprocess.check_output("touch " + snapshot, shell=True, stderr=subprocess.STDOUT)
-					else:
-						print("creado nuevo SNAPSHOT .... ")
-						subprocess.check_output("touch " + snapshot, shell=True, stderr=subprocess.STDOUT)
+					resetSnapshot(snapshot)
 					filename=destination + "/" + _datetime + "_full.tar.gz"
 					command="tar -cvzg " + snapshot + " -f " + filename + " " + excludeStr + ' ' + source
-
 				elif args.incremental:
-					snapshot=destination + "/full.snapshot"
 					if os.path.exists(snapshot):
 						filename=destination + "/" + _datetime + "_inc.tar.gz"
 						command="tar -cvzg " + snapshot + " -f " + filename + " " + excludeStr + ' ' + source
@@ -84,12 +87,26 @@ try:
 				else:
 					filename=destination + "/" + _datetime + ".tar.gz"	
 					command="tar -cvzf " + filename + " " + excludeStr + ' ' + source
+					
 		else:
-				filename=destination + "/" + _datetime + ".tar.gz"
+			snapshot=destination + "/full.snapshot"
+			if args.full:
+				resetSnapshot(snapshot)
+				filename=destination + "/" + _datetime + "_full.tar.gz"
+				command="tar -cvzg " + snapshot + " -f " + filename + " " + source
+
+			elif args.incremental:
+				if os.path.exists(snapshot):
+					filename=destination + "/" + _datetime + "_inc.tar.gz"
+					command="tar -cvzg " + snapshot + " -f " + filename + " " + source
+				else:
+					print("el archivo de SNAPSHOT no existe, debes realizar un backup completo con anterioridad")
+			else:
+				filename=destination + "/" + _datetime + ".tar.gz"	
 				command="tar -cvzf " + filename + " " + source
 				
 		print("ejecutando la copia de seguridad ...")
-		
+
 		process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		stdout, _ = process.communicate()
 		logFile=filename + ".log"
@@ -103,7 +120,7 @@ try:
 			if os.path.exists(filename):
 				size=os.path.getsize(filename) / (1000 * 1000)
 				message="🆗🆗🆗 BACKUP EXITOSO 🆗🆗🆗 ,📁 " + filename + " 📁, 📅 " + now.strftime("%Y-%M-%d") + " 📅, 🪨 " + str(size) + " MB"
-			sendTelegram(tokenapi, chatid, message)
+			sendTelegram(tokenapi, chatid, message, logFile)
 
 		print(filename)
 		

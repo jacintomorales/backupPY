@@ -2,7 +2,7 @@
 # --version 1.0
 # Prerequisitos: 
 # S.O: Linux
-# -- python3
+# -- python 3.5 o superior
 # Autor: https://github.com/jacintomorales
 # Ejemplo: python3 telegram.py -t <TOKENAPI> -c <CHATID> -m <MESSAGE> 
 
