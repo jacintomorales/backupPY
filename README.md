@@ -35,9 +35,11 @@ Proximanente estare adicionando la notificacion por correo electronico.
 - Sistema Operativos: Unix / Linux
 - Python3 o posterior
 
-```bash
+```
+bash
 sudo apt-get install python3
-python3 --version```
+python3 --version
+```
 
 - Libreria oficina de TELEGRAM-BOT
 
