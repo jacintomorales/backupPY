@@ -33,10 +33,16 @@ Proximanente estare adicionando la notificacion por correo electronico.
 
 ### Requisitos
 - Sistema Operativos: Unix / Linux
+- Python3 o posterior
 
-- ``` Python3 o posterior ```
-bash
-sudo apt-get install python3
-python3 --version
+```bash```
+```sudo apt-get install python3```
+```python3 --version```
 
-- Libreria oficina de TELEGRAM-BOT 
+- Libreria oficina de TELEGRAM-BOT
+
+```sudo apt-get install python3-python-telegram-bot```
+o 
+```pip install python-telegram-bot```
+
+
