@@ -31,20 +31,36 @@ Proximanente estare adicionando la notificacion por correo electronico.
 
 # MODO DE USO
 
-### Requisitos
+## Requisitos
 - Sistema Operativos: Unix / Linux
 - Python3 o posterior
-
 ```
 bash
 sudo apt-get install python3
 python3 --version
 ```
-
 - Libreria oficina de TELEGRAM-BOT
-
 ```sudo apt-get install python3-python-telegram-bot```
 o 
 ```pip install python-telegram-bot```
+
+## Instalacion
+Existen 2 formas de poder utilizar esta herramienta. 
+
+1) Sitio de GITHUB
+- Visita la página principal del repositorio en GitHub.
+- Haz clic en el botón verde "Code" cerca de la esquina superior derecha.
+- Selecciona "Download ZIP" para descargar el repositorio como un archivo comprimido ZIP.
+- Descomprime el archivo ZIP descargado en tu computadora. Obtendrás una carpeta con el nombre del repositorio que contiene todos los archivos del proyecto.
+
+2) Clona el repositorio de GITHUB (Debes tener GIT instalado)
+```
+bash
+cd /opt
+git clone https://github.com/jacintomorales/backupPY.git
+```
+
+
+
 
 
