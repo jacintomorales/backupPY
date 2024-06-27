@@ -2,7 +2,7 @@
 # --version 2.0
 # Prerequisitos: 
 # S.O: Linux
-# -- python 3.5 o superior
+# -- python 3.6 o superior
 # -- apt-get install python3-python-telegram-bot
 # Autor: https://github.com/jacintomorales
 # Ejemplo: python3 telegram.py -t <TOKENAPI> -c <CHATID> -m <MESSAGE> -f <FILE> 

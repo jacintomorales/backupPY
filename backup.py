@@ -5,7 +5,7 @@
 # Prerequisitos: 
 # S.O: Linux
 # -- tar
-# -- python 3.5 o superior
+# -- python 3.6 o superior
 # Autor: https://github.com/jacintomorales
 # Ejemplo 1: python3 backup.py -s <FUENTE> -d <DESTINO> --exclude <RUTA1> <RUTA2> --full 
 # Ejemplo 2: python3 backup.py -s <FUENTE> -d <DESTINO> ---exclude <RUTA1> <RUTA2> --incremental
@@ -87,7 +87,7 @@ try:
 				else:
 					filename=destination + "/" + _datetime + ".tar.gz"	
 					command="tar -cvzf " + filename + " " + excludeStr + ' ' + source
-					
+
 		else:
 			snapshot=destination + "/full.snapshot"
 			if args.full:
