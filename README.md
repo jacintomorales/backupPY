@@ -2,11 +2,11 @@
 
 Es un conjunto de Scripts en python para hacer copias de seguridad completas e incrementales con un registro detallado en texto plano utilizando la herramienta de compresion TAR que existe en sistemas operativos UNIX/Linux.
 
-# El por que ? 
+### El por que ? 
 
 Como parte de mi experiencia como Director de IT en alguna empresas he utilizado la herramienta TAR esencialmente a la hora de crear copias de seguridad de los archivos y directorios que tienen informacion critica para estas compañias y aunque con esta potente herramienta podia crear mis tareas programadas y automatizar un poco este proceso, siempre quedaba con la duda si si se habia hecho bien la copia. Asi que entraba al servidor, y comenzaba a buscar los directorios uno a uno, miraba si estos tenian el tamaño correcto y si su contenido era el correcto. Trabajo que me quitaba mucho tiempo ya que eran mas de 10 copias de seguridad de distintos servicios. Por tal motivo, decidi crear esta herramienta, que adicional a la copia de archivos convencional tiene los siguientes caracteristicas adicionales. 
 
-# Mejoras
+### Mejoras
 
 1) Ya no es necesario que especifiques el nombre del archivo. Este lo va a crear automaticamente con la fecha y tiempo actual en formato de salida para el nombre del archivo RUTA/YMD-HHMMSS.tar.gz si es una copia normal o RUTA/YMD-HHMMSS_full.tar.gz si es completa o RUTA/YMD-HHMMSS_inc.tar.gz si es incremental.
 
@@ -34,12 +34,9 @@ Proximanente estare adicionando la notificacion por correo electronico.
 ### Requisitos
 - Sistema Operativos: Unix / Linux
 
-- ``` Python3 o posterior
+- ``` Python3 o posterior ```
 bash
 sudo apt-get install python3
 python3 --version
-```
-
-
 
 - Libreria oficina de TELEGRAM-BOT 
