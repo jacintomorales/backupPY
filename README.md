@@ -1,50 +1,57 @@
-# backupPY 
+# backupPY
 
-Es un conjunto de Scripts en python para hacer copias de seguridad completas e incrementales con un registro detallado en texto plano utilizando la herramienta de compresion TAR que existe en sistemas operativos UNIX/Linux.
+backupPY es un conjunto de scripts en Python diseñados para realizar copias de seguridad completas e incrementales con un registro detallado en texto plano, utilizando la herramienta de compresión TAR, disponible en sistemas operativos UNIX/Linux.
 
-### El por que ? 
+### ¿Por qué usar backupPY?
 
-Como parte de mi experiencia como Director de IT en alguna empresas he utilizado la herramienta TAR esencialmente a la hora de crear copias de seguridad de los archivos y directorios que tienen informacion critica para estas compañias y aunque con esta potente herramienta podia crear mis tareas programadas y automatizar un poco este proceso, siempre quedaba con la duda si si se habia hecho bien la copia. Asi que entraba al servidor, y comenzaba a buscar los directorios uno a uno, miraba si estos tenian el tamaño correcto y si su contenido era el correcto. Trabajo que me quitaba mucho tiempo ya que eran mas de 10 copias de seguridad de distintos servicios. Por tal motivo, decidi crear esta herramienta, que adicional a la copia de archivos convencional tiene los siguientes caracteristicas adicionales. 
+Como Director de IT en varias empresas, he utilizado la herramienta TAR para crear copias de seguridad de archivos y directorios con información crítica. Aunque TAR es potente para automatizar este proceso, siempre quedaba con la duda de si la copia se había realizado correctamente. Esto me obligaba a verificar manualmente los directorios y su contenido, un proceso que consumía mucho tiempo debido al gran número de copias de seguridad que debía gestionar. Por ello, decidí crear esta herramienta, que además de realizar copias de seguridad convencionales, incluye las siguientes mejoras:
 
 ### Mejoras
 
-1) Ya no es necesario que especifiques el nombre del archivo. Este lo va a crear automaticamente con la fecha y tiempo actual en formato de salida para el nombre del archivo RUTA/YMD-HHMMSS.tar.gz si es una copia normal o RUTA/YMD-HHMMSS_full.tar.gz si es completa o RUTA/YMD-HHMMSS_inc.tar.gz si es incremental.
+1. **Generación automática de nombres de archivo:**
+   - El nombre del archivo se genera automáticamente con la fecha y hora actual en el formato `RUTA/YMD-HHMMSS.tar.gz` para copias normales, `RUTA/YMD-HHMMSS_full.tar.gz` para copias completas, o `RUTA/YMD-HHMMSS_inc.tar.gz` para copias incrementales.
 
-2) Archivo de registro de copias: se genera principalmente 2 archivos al momento de la copia. el primero sera el archivo comprimido terminada en *.tar.gz y el segundo un archivo de registro detallado que contiene los nombres de archivos y directorios que fueron respaldados con nombre *.tar.gz.log
+2. **Archivo de registro:**
+   - Se generan dos archivos principales al realizar una copia: el archivo comprimido (`*.tar.gz`) y un archivo de registro detallado (`*.tar.gz.log`) que contiene los nombres de los archivos y directorios respaldados.
 
-3) Si especificas la opcion -f o la opcion --full, aparte de que te crea los 2 archivos anteriores, de va a crear el archivo full.snapshot que utilizaremos para las copias incrementales posteriores. 
+3. **Copia completa:**
+   - Con la opción `-f` o `--full`, además de los dos archivos anteriores, se crea el archivo `full.snapshot` para las copias incrementales posteriores.
 
-4) Si especificas la opcion -i o --incremental, este solo hara copia de los archivos que fueron creados en fechas posteriores a la ultima copia completa. No va a ser necesario que especifiques el archivo de snapshot, el va a tomar el directorio de destino y lo va a buscar como full.snapshot. NOTA: Debes crear con anterioridad una copia completa. 
+4. **Copia incremental:**
+   - Con la opción `-i` o `--incremental`, solo se copian los archivos creados después de la última copia completa. No es necesario especificar el archivo de snapshot; el script buscará `full.snapshot` en el directorio de destino. Nota: Debes crear una copia completa previamente.
 
-5) Se simplifica la forma de agregar exlusiones: con la opcion -e o --exclude vas a poder ingresar los directorios o archivos que quieras excluir de la copia de la siguiente manera "-e RUTA1 RUTA2 RUTA3 RUTA4" ... Se creo para minimizar el procesos de agregar por cada archivo o directorio el "--exclude=" que tiene como requisito la utilidad TAR.
+5. **Exclusiones simplificadas:**
+   - Con la opción `-e` o `--exclude`, puedes excluir directorios o archivos de la copia de seguridad de manera simplificada: `-e RUTA1 RUTA2 RUTA3`.
 
-6) Notificaciones a TELEGRAM: que mejor manera de mantenernos informados si se creo o no una copia que enviando los datos mas importantes con un mensaje a traves de telegram. Especificando la opcion -t o --telegram TOKENAPI CHATID enviara una notificacion con la siguiente informacion: 
+6. **Notificaciones a Telegram:**
+   - Con la opción `-t` o `--telegram TOKENAPI CHATID`, se enviará una notificación a través de Telegram con la siguiente información:
+     - Archivo de registro (`*.tar.gz.log`)
+     - Nombre del archivo de la copia de seguridad
+     - Fecha de ejecución
+     - Tamaño del archivo en Megabytes (MB)
+   - **Nota importante:** Debes crear un BOT y un CHAT para el Bot en Telegram. Aquí te dejo los pasos para hacerlo.
 
-- Archivo de registor *.tar.gz.log de la copia
-- Nombre del archivo en donde se almaceno la copia de seguridad
-- Fecha de ejecucion
-- Tamaño del archivo en MegaBytes (MB)
+Próximamente, añadiré la notificación por correo electrónico.
 
-NOTA IMPORTANTE: Es necesario que crees un BOT y un CHAT para el Bot dentro de telegram. Aca te dejo los pasos para hacerlo. 
+## Modo de uso
 
-Proximanente estare adicionando la notificacion por correo electronico.
-
-# MODO DE USO
-
-## Requisitos
-- Sistema Operativos: Unix / Linux
-- Python3 o posterior
-```
-bash
-sudo apt-get install python3
-python3 --version
-```
+### Requisitos
+- Sistema Operativo: Unix / Linux
+- Python 3 o posterior
+  ```bash
+  sudo apt-get install python3
+  python3 --version
 - Libreria oficina de TELEGRAM-BOT
-```sudo apt-get install python3-python-telegram-bot```
+```
+sudo apt-get install python3-python-telegram-bot
+```
 o 
-```pip install python-telegram-bot```
+```
+pip install python-telegram-bot
+```
 
-## Instalacion
+## Instalacion backupPY
+
 Existen 2 formas de poder utilizar esta herramienta. 
 
 1) Sitio de GITHUB
@@ -60,7 +67,23 @@ cd /opt
 git clone https://github.com/jacintomorales/backupPY.git
 ```
 
+Una vez realizada la instalacion backupPY, busca en internet un manual para crear el bot de telegram con BootFather y obten el TOKEN y el CHATID necesario.
 
+## Manual de usuario:
 
+1) Sintaxis: 
+
+```
+python3 backup.py -s ORIGEN -d DESTINO -e EXCLUDE1 EXCLUDE2 EXCLUDE3 --full -t TOKENAPI CHATID
+```
+
+2) Opciones: 
+
+- -s o --source se acompaña con el directorio de origen de la copia
+- -d o --destination se acompaña con el directorio de destino
+- -e o --exclude. Acompañalo con multiples directorios dpara excluir
+- -f o --full. Indica que el backup es completo
+- -i o --incremental. Indica que el backup es incremental
+- -t o --telegram. acompañado con el TOKENAPI del Bot y el CHATID te enviara la notificacion a telegram. 
 
 
