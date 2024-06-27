@@ -19,12 +19,13 @@ Como parte de mi experiencia como Director de IT en alguna empresas he utilizado
 5) Se simplifica la forma de agregar exlusiones: con la opcion -e o --exclude vas a poder ingresar los directorios o archivos que quieras excluir de la copia de la siguiente manera "-e RUTA1 RUTA2 RUTA3 RUTA4" ... Se creo para minimizar el procesos de agregar por cada archivo o directorio el "--exclude=" que tiene como requisito la utilidad TAR.
 
 6) Notificaciones a TELEGRAM: que mejor manera de mantenernos informados si se creo o no una copia que enviando los datos mas importantes con un mensaje a traves de telegram. Especificando la opcion -t o --telegram TOKENAPI CHATID enviara una notificacion con la siguiente informacion: 
-        - Archivo de registor *.tar.gz.log de la copia
-        - Nombre del archivo en donde se almaceno la copia de seguridad
-        - Fecha de ejecucion
-        - Tamaño del archivo en MegaBytes (MB)
 
-        NOTA IMPoRTANTE: Es necesario que crees un BOT y un CHAT para el Bot dentro de telegram. Aca te dejo los pasos para hacerlo. 
+- Archivo de registor *.tar.gz.log de la copia
+- Nombre del archivo en donde se almaceno la copia de seguridad
+- Fecha de ejecucion
+- Tamaño del archivo en MegaBytes (MB)
+
+NOTA IMPORTANTE: Es necesario que crees un BOT y un CHAT para el Bot dentro de telegram. Aca te dejo los pasos para hacerlo. 
 
 Proximanente estare adicionando la notificacion por correo electronico.
 
